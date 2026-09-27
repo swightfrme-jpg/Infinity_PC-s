@@ -1,0 +1,12 @@
+{
+  "name": "infinity-pcs",
+  "version": "1.0.0",
+  "description": "Infinity PCs custom PC builder",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
