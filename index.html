@@ -1,15 +1,1678 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="https://base44.com/logo_v2.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="manifest" href="/manifest.json" />
-    <title>Infinity PC's</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinity PCs</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:#080c12;
+color:#fff;
+}
+
+button,input,select{font:inherit}
+
+button{cursor:pointer}
+
+header{
+position:sticky;
+top:0;
+z-index:1000;
+background:#0d131d;
+border-bottom:1px solid #253044;
+}
+
+.nav{
+max-width:1450px;
+margin:auto;
+padding:15px 22px;
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.logo{
+font-size:25px;
+font-weight:900;
+color:#60a5fa;
+white-space:nowrap;
+}
+
+.navlinks{
+display:flex;
+gap:5px;
+flex-wrap:wrap;
+}
+
+.navlinks button{
+background:transparent;
+border:0;
+color:#cbd5e1;
+padding:10px 13px;
+border-radius:8px;
+}
+
+.navlinks button:hover,
+.navlinks button.active{
+background:#1e293b;
+color:#60a5fa;
+}
+
+.login{
+margin-left:auto;
+}
+
+.btn{
+background:#2563eb;
+color:white;
+border:0;
+border-radius:8px;
+padding:11px 16px;
+font-weight:bold;
+}
+
+.btn:hover{filter:brightness(1.12)}
+
+.btn.secondary{
+background:#1e293b;
+}
+
+.btn.danger{
+background:#dc2626;
+}
+
+main{
+max-width:1450px;
+margin:auto;
+padding:30px 22px 80px;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.hero{
+min-height:430px;
+padding:55px;
+border-radius:22px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+background:
+radial-gradient(circle at 80% 20%,#1d4ed8,transparent 35%),
+radial-gradient(circle at 20% 80%,#172554,transparent 40%),
+#111827;
+border:1px solid #263244;
+}
+
+.hero h1{
+font-size:clamp(42px,7vw,78px);
+max-width:900px;
+line-height:.98;
+margin-bottom:20px;
+}
+
+.hero p{
+max-width:750px;
+color:#a5b4fc;
+font-size:18px;
+line-height:1.6;
+margin-bottom:25px;
+}
+
+.hero-buttons{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.title{
+font-size:32px;
+margin:30px 0 20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+gap:18px;
+}
+
+.card{
+background:#111827;
+border:1px solid #263244;
+border-radius:14px;
+padding:20px;
+transition:.2s;
+}
+
+.card:hover{
+transform:translateY(-3px);
+border-color:#3b82f6;
+}
+
+.card h3{margin-bottom:10px}
+
+.price{
+font-size:26px;
+font-weight:900;
+color:#60a5fa;
+margin:12px 0;
+}
+
+.specs{
+color:#94a3b8;
+font-size:14px;
+line-height:1.7;
+margin-bottom:15px;
+}
+
+.tag{
+display:inline-block;
+background:#172554;
+color:#93c5fd;
+padding:5px 9px;
+border-radius:99px;
+font-size:12px;
+margin-bottom:10px;
+}
+
+.toolbar{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:20px;
+}
+
+.toolbar input,
+.toolbar select,
+.part select{
+background:#111827;
+border:1px solid #334155;
+color:white;
+padding:11px;
+border-radius:8px;
+}
+
+.toolbar input{min-width:270px}
+
+.builder-layout{
+display:grid;
+grid-template-columns:1fr 370px;
+gap:20px;
+align-items:start;
+}
+
+.builder{
+display:grid;
+gap:13px;
+}
+
+.part{
+background:#111827;
+border:1px solid #263244;
+border-radius:13px;
+padding:16px;
+}
+
+.part label{
+display:block;
+color:#94a3b8;
+font-size:13px;
+margin-bottom:7px;
+}
+
+.part select{width:100%}
+
+.summary{
+position:sticky;
+top:85px;
+background:#111827;
+border:1px solid #263244;
+border-radius:15px;
+padding:20px;
+}
+
+.summary-row{
+display:flex;
+justify-content:space-between;
+gap:10px;
+padding:9px 0;
+border-bottom:1px solid #1e293b;
+font-size:14px;
+}
+
+.total{
+font-size:30px;
+font-weight:900;
+color:#60a5fa;
+margin:20px 0;
+}
+
+.notice{
+background:#172033;
+color:#94a3b8;
+padding:12px;
+border-radius:9px;
+font-size:13px;
+line-height:1.5;
+margin:12px 0;
+}
+
+.good{color:#4ade80}
+.bad{color:#f87171}
+
+.cart-item{
+background:#111827;
+border:1px solid #263244;
+border-radius:13px;
+padding:18px;
+margin-bottom:12px;
+display:flex;
+justify-content:space-between;
+gap:15px;
+align-items:center;
+}
+
+.download-box{
+background:#111827;
+border:1px solid #263244;
+border-radius:18px;
+padding:45px;
+text-align:center;
+}
+
+.download-box h1{
+font-size:44px;
+margin-bottom:15px;
+}
+
+.download-box p{
+color:#94a3b8;
+max-width:750px;
+margin:0 auto 25px;
+line-height:1.6;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.8);
+z-index:3000;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+
+.modal.open{display:flex}
+
+.modal-box{
+width:min(500px,100%);
+background:#111827;
+border:1px solid #334155;
+border-radius:15px;
+padding:25px;
+}
+
+.modal-box input{
+width:100%;
+margin-bottom:12px;
+padding:12px;
+background:#080c12;
+border:1px solid #334155;
+color:white;
+border-radius:8px;
+}
+
+.close{
+float:right;
+background:transparent;
+border:0;
+color:#94a3b8;
+font-size:25px;
+}
+
+footer{
+text-align:center;
+padding:30px;
+color:#64748b;
+border-top:1px solid #263244;
+}
+
+@media(max-width:850px){
+.builder-layout{grid-template-columns:1fr}
+.summary{position:static}
+.nav{flex-wrap:wrap}
+.login{margin-left:0}
+.hero{padding:30px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="nav">
+
+<div class="logo">∞ Infinity PCs</div>
+
+<div class="navlinks">
+
+<button class="navbtn active" data-page="home">Home</button>
+
+<button class="navbtn" data-page="prebuilt">
+Prebuilt PCs
+</button>
+
+<button class="navbtn" data-page="builder">
+Custom Build
+</button>
+
+<button class="navbtn" data-page="cart">
+Cart (<span id="cartCount">0</span>)
+</button>
+
+<button class="navbtn" data-page="download">
+Download Website
+</button>
+
+</div>
+
+<button class="btn secondary login" onclick="openLogin()">
+Login
+</button>
+
+</div>
+
+</header>
+
+
+<main>
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+<div class="hero">
+
+<span class="tag">INFINITY PCS</span>
+
+<h1>Build your PC without limits.</h1>
+
+<p>
+Shop prebuilt gaming PCs or create your own computer using
+CPUs, GPUs, motherboards, RAM, storage, power supplies,
+cases and cooling.
+</p>
+
+<div class="hero-buttons">
+
+<button class="btn" onclick="showPage('builder')">
+Build Your PC
+</button>
+
+<button class="btn secondary" onclick="showPage('prebuilt')">
+Shop Prebuilt PCs
+</button>
+
+</div>
+
+</div>
+
+
+<h2 class="title">Why Infinity PCs?</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>⚙️ Compatibility</h3>
+<p class="specs">
+The builder checks CPU sockets, RAM types, coolers and
+power requirements.
+</p>
+</div>
+
+<div class="card">
+<h3>💰 Amazon Pricing</h3>
+<p class="specs">
+Prices can be updated through the secure Amazon API server.
+</p>
+</div>
+
+<div class="card">
+<h3>📦 Custom Builds</h3>
+<p class="specs">
+Create and save your own complete PC.
+</p>
+</div>
+
+<div class="card">
+<h3>📥 Download</h3>
+<p class="specs">
+Download the website or your completed build.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PREBUILT -->
+
+<section id="prebuilt" class="page">
+
+<h1 class="title">Prebuilt PCs</h1>
+
+<div class="toolbar">
+
+<input
+id="search"
+placeholder="Search PCs..."
+oninput="renderPrebuilts()">
+
+<select id="filter" onchange="renderPrebuilts()">
+
+<option value="all">All Prices</option>
+<option value="1000">Under $1,000</option>
+<option value="2000">Under $2,000</option>
+<option value="5000">Under $5,000</option>
+<option value="10000">Under $10,000</option>
+
+</select>
+
+</div>
+
+<div id="prebuiltGrid" class="grid"></div>
+
+</section>
+
+
+<!-- BUILDER -->
+
+<section id="builder" class="page">
+
+<h1 class="title">Custom PC Builder</h1>
+
+<div class="builder-layout">
+
+<div class="builder">
+
+<div class="part">
+<label>CPU</label>
+<select id="cpu"></select>
+</div>
+
+<div class="part">
+<label>GPU</label>
+<select id="gpu"></select>
+</div>
+
+<div class="part">
+<label>Motherboard</label>
+<select id="motherboard"></select>
+</div>
+
+<div class="part">
+<label>RAM</label>
+<select id="ram"></select>
+</div>
+
+<div class="part">
+<label>Storage</label>
+<select id="storage"></select>
+</div>
+
+<div class="part">
+<label>Power Supply</label>
+<select id="psu"></select>
+</div>
+
+<div class="part">
+<label>Case</label>
+<select id="case"></select>
+</div>
+
+<div class="part">
+<label>CPU Cooler</label>
+<select id="cooler"></select>
+</div>
+
+<div class="part">
+<label>Case Fans</label>
+<select id="fans"></select>
+</div>
+
+</div>
+
+
+<div class="summary">
+
+<h2>Your Build</h2>
+
+<div id="compatibility"></div>
+
+<div id="summary"></div>
+
+<div class="total" id="total">$0</div>
+
+<button
+class="btn"
+style="width:100%;margin-bottom:10px"
+onclick="addBuildToCart()">
+Add Build To Cart
+</button>
+
+<button
+class="btn secondary"
+style="width:100%"
+onclick="downloadBuild()">
+Download Build
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CART -->
+
+<section id="cart" class="page">
+
+<h1 class="title">Shopping Cart</h1>
+
+<div id="cartItems"></div>
+
+<div class="card">
+
+<h2>Cart Total</h2>
+
+<div class="total" id="cartTotal">$0</div>
+
+<button class="btn" onclick="checkout()">
+Checkout
+</button>
+
+<button class="btn danger" onclick="clearCart()">
+Clear Cart
+</button>
+
+</div>
+
+</section>
+
+
+
+</main>
+
+
+<footer>
+Infinity PCs © 2026
+</footer>
+
+
+<!-- LOGIN -->
+
+<div id="loginModal" class="modal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeLogin()">×</button>
+
+<h2>Login</h2>
+
+<br>
+
+<input id="email" type="email" placeholder="Email">
+
+<input id="password" type="password" placeholder="Password">
+
+<button class="btn" onclick="login()">
+Login
+</button>
+
+<div class="notice">
+Demo login. Real authentication requires a backend.
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ================================
+   PART DATABASE
+================================ */
+
+const parts = {
+
+cpu:[
+{id:"5600",name:"AMD Ryzen 5 5600",price:119,socket:"AM4"},
+{id:"5700x",name:"AMD Ryzen 7 5700X",price:179,socket:"AM4"},
+{id:"5800x3d",name:"AMD Ryzen 7 5800X3D",price:299,socket:"AM4"},
+{id:"5900x",name:"AMD Ryzen 9 5900X",price:299,socket:"AM4"},
+
+{id:"7500f",name:"AMD Ryzen 5 7500F",price:139,socket:"AM5"},
+{id:"7600",name:"AMD Ryzen 5 7600",price:189,socket:"AM5"},
+{id:"7700",name:"AMD Ryzen 7 7700",price:279,socket:"AM5"},
+{id:"7800x3d",name:"AMD Ryzen 7 7800X3D",price:399,socket:"AM5"},
+{id:"9700x",name:"AMD Ryzen 7 9700X",price:359,socket:"AM5"},
+{id:"9800x3d",name:"AMD Ryzen 7 9800X3D",price:479,socket:"AM5"},
+{id:"9950x3d",name:"AMD Ryzen 9 9950X3D",price:699,socket:"AM5"},
+
+{id:"12400f",name:"Intel Core i5-12400F",price:119,socket:"LGA1700"},
+{id:"12600k",name:"Intel Core i5-12600K",price:179,socket:"LGA1700"},
+{id:"13600k",name:"Intel Core i5-13600K",price:249,socket:"LGA1700"},
+{id:"13700k",name:"Intel Core i7-13700K",price:349,socket:"LGA1700"},
+{id:"13900k",name:"Intel Core i9-13900K",price:499,socket:"LGA1700"},
+{id:"14600k",name:"Intel Core i5-14600K",price:289,socket:"LGA1700"},
+{id:"14700k",name:"Intel Core i7-14700K",price:389,socket:"LGA1700"},
+{id:"14900k",name:"Intel Core i9-14900K",price:529,socket:"LGA1700"},
+
+{id:"265k",name:"Intel Core Ultra 5 265K",price:299,socket:"LGA1851"},
+{id:"275k",name:"Intel Core Ultra 7 275K",price:399,socket:"LGA1851"},
+{id:"285k",name:"Intel Core Ultra 9 285K",price:589,socket:"LGA1851"}
+],
+
+gpu:[
+{id:"3060",name:"RTX 3060 12GB",price:249,watts:170},
+{id:"4060",name:"RTX 4060 8GB",price:299,watts:115},
+{id:"4060ti",name:"RTX 4060 Ti 8GB",price:399,watts:160},
+{id:"4070",name:"RTX 4070 12GB",price:499,watts:200},
+{id:"4070super",name:"RTX 4070 SUPER 12GB",price:599,watts:220},
+{id:"4070tis",name:"RTX 4070 Ti SUPER 16GB",price:799,watts:285},
+{id:"4080s",name:"RTX 4080 SUPER 16GB",price:999,watts:320},
+{id:"4090",name:"RTX 4090 24GB",price:1599,watts:450},
+{id:"5070",name:"RTX 5070 12GB",price:549,watts:250},
+{id:"5070ti",name:"RTX 5070 Ti 16GB",price:749,watts:300},
+{id:"5080",name:"RTX 5080 16GB",price:999,watts:360},
+{id:"5090",name:"RTX 5090 32GB",price:1999,watts:575},
+
+{id:"7600xt",name:"Radeon RX 7600 XT",price:329,watts:190},
+{id:"7700xt",name:"Radeon RX 7700 XT",price:399,watts:245},
+{id:"7800xt",name:"Radeon RX 7800 XT",price:499,watts:263},
+{id:"7900xt",name:"Radeon RX 7900 XT",price:699,watts:315},
+{id:"7900xtx",name:"Radeon RX 7900 XTX",price:899,watts:355}
+],
+
+motherboard:[
+{id:"b450",name:"B450 ATX DDR4",price:99,socket:"AM4",ram:"DDR4"},
+{id:"b550",name:"B550 ATX DDR4",price:119,socket:"AM4",ram:"DDR4"},
+{id:"x570",name:"X570 ATX DDR4",price:169,socket:"AM4",ram:"DDR4"},
+
+{id:"a620",name:"A620 AM5 DDR5",price:109,socket:"AM5",ram:"DDR5"},
+{id:"b650",name:"B650 ATX DDR5",price:169,socket:"AM5",ram:"DDR5"},
+{id:"b650e",name:"B650E ATX DDR5",price:219,socket:"AM5",ram:"DDR5"},
+{id:"x670e",name:"X670E ATX DDR5",price:269,socket:"AM5",ram:"DDR5"},
+{id:"x870",name:"X870 ATX DDR5",price:229,socket:"AM5",ram:"DDR5"},
+
+{id:"b660",name:"B660 DDR4",price:119,socket:"LGA1700",ram:"DDR4"},
+{id:"b760d4",name:"B760 DDR4",price:139,socket:"LGA1700",ram:"DDR4"},
+{id:"b760",name:"B760 DDR5",price:149,socket:"LGA1700",ram:"DDR5"},
+{id:"z690",name:"Z690 DDR5",price:199,socket:"LGA1700",ram:"DDR5"},
+{id:"z790",name:"Z790 DDR5",price:229,socket:"LGA1700",ram:"DDR5"},
+
+{id:"b860",name:"B860 DDR5",price:179,socket:"LGA1851",ram:"DDR5"},
+{id:"z890",name:"Z890 DDR5",price:249,socket:"LGA1851",ram:"DDR5"}
+],
+
+ram:[
+{id:"16d4",name:"16GB DDR4-3200",price:45,type:"DDR4"},
+{id:"32d4",name:"32GB DDR4-3200",price:69,type:"DDR4"},
+{id:"64d4",name:"64GB DDR4-3200",price:139,type:"DDR4"},
+
+{id:"16d5",name:"16GB DDR5-5600",price:59,type:"DDR5"},
+{id:"32d5",name:"32GB DDR5-6000",price:99,type:"DDR5"},
+{id:"64d5",name:"64GB DDR5-6000",price:169,type:"DDR5"},
+{id:"96d5",name:"96GB DDR5-6000",price:239,type:"DDR5"},
+{id:"128d5",name:"128GB DDR5",price:349,type:"DDR5"},
+{id:"192d5",name:"192GB DDR5",price:499,type:"DDR5"}
+],
+
+storage:[
+{id:"500",name:"500GB NVMe SSD",price:49},
+{id:"1tb",name:"1TB PCIe 4 NVMe",price:69},
+{id:"2tb",name:"2TB PCIe 4 NVMe",price:129},
+{id:"4tb",name:"4TB PCIe 4 NVMe",price:249},
+{id:"8tb",name:"8TB PCIe 4 NVMe",price:549},
+{id:"1tb5",name:"1TB PCIe 5 NVMe",price:119},
+{id:"2tb5",name:"2TB PCIe 5 NVMe",price:199},
+{id:"4tb5",name:"4TB PCIe 5 NVMe",price:399},
+{id:"sata1",name:"1TB SATA SSD",price:59},
+{id:"sata2",name:"2TB SATA SSD",price:99},
+{id:"hdd2",name:"2TB HDD",price:55},
+{id:"hdd4",name:"4TB HDD",price:85},
+{id:"hdd8",name:"8TB HDD",price:149},
+{id:"hdd16",name:"16TB HDD",price:279}
+],
+
+psu:[
+{id:"450",name:"450W Bronze",price:49,watts:450},
+{id:"550",name:"550W Bronze",price:59,watts:550},
+{id:"650",name:"650W Gold",price:89,watts:650},
+{id:"750",name:"750W Gold",price:99,watts:750},
+{id:"850",name:"850W Gold",price:119,watts:850},
+{id:"1000",name:"1000W Gold",price:159,watts:1000},
+{id:"1200",name:"1200W Platinum",price:239,watts:1200},
+{id:"1600",name:"1600W Platinum",price:399,watts:1600}
+],
+
+case:[
+{id:"mid",name:"Airflow ATX Mid Tower",price:79},
+{id:"glass",name:"Premium Glass ATX Tower",price:149},
+{id:"compact",name:"Compact mATX Case",price:69},
+{id:"full",name:"Premium Full Tower",price:229},
+{id:"extreme",name:"Extreme E-ATX Tower",price:299}
+],
+
+cooler:[
+{id:"air",name:"120mm Tower Air Cooler",price:39,sockets:["AM4","AM5","LGA1700","LGA1851"]},
+{id:"dual",name:"Dual Tower Air Cooler",price:69,sockets:["AM4","AM5","LGA1700","LGA1851"]},
+{id:"240",name:"240mm AIO",price:89,sockets:["AM4","AM5","LGA1700","LGA1851"]},
+{id:"280",name:"280mm AIO",price:109,sockets:["AM4","AM5","LGA1700","LGA1851"]},
+{id:"360",name:"360mm AIO",price:119,sockets:["AM4","AM5","LGA1700","LGA1851"]},
+{id:"420",name:"420mm AIO",price:169,sockets:["AM4","AM5","LGA1700","LGA1851"]}
+],
+
+fans:[
+{id:"3pack",name:"3-Pack 120mm Fans",price:29},
+{id:"5pack",name:"5-Pack 120mm Fans",price:45},
+{id:"rgb3",name:"3-Pack ARGB Fans",price:49},
+{id:"rgb5",name:"5-Pack Premium ARGB Fans",price:79}
+]
+
+};
+
+
+/* ================================
+   PREBUILTS
+================================ */
+
+const prebuilts=[
+
+{
+name:"Infinity Starter",
+price:599,
+cpu:"Ryzen 5 5600",
+gpu:"RTX 3050",
+ram:"16GB DDR4",
+storage:"1TB NVMe"
+},
+
+{
+name:"Infinity 4060",
+price:899,
+cpu:"Ryzen 5 5600",
+gpu:"RTX 4060",
+ram:"16GB DDR4",
+storage:"1TB NVMe"
+},
+
+{
+name:"Infinity 4060 Ti",
+price:1199,
+cpu:"Ryzen 7",
+gpu:"RTX 4060 Ti",
+ram:"32GB DDR4",
+storage:"1TB NVMe"
+},
+
+{
+name:"Infinity 5070",
+price:1929,
+cpu:"Ryzen 7 9700X",
+gpu:"RTX 5070",
+ram:"32GB DDR5",
+storage:"1TB NVMe"
+},
+
+{
+name:"Infinity 5070 X3D",
+price:2179,
+cpu:"Ryzen 7 7800X3D",
+gpu:"RTX 5070",
+ram:"32GB DDR5",
+storage:"2TB NVMe"
+},
+
+{
+name:"Infinity 5080",
+price:3999,
+cpu:"Ryzen 9",
+gpu:"RTX 5080",
+ram:"64GB DDR5",
+storage:"2TB NVMe"
+},
+
+{
+name:"Infinity Creator",
+price:6499,
+cpu:"Core Ultra 9",
+gpu:"RTX 5080",
+ram:"64GB DDR5",
+storage:"4TB NVMe"
+},
+
+{
+name:"Infinity Ultimate",
+price:9999,
+cpu:"Ryzen 9 9950X3D",
+gpu:"RTX 5090",
+ram:"128GB DDR5",
+storage:"8TB NVMe"
+}
+
+];
+
+
+/* ================================
+   STATE
+================================ */
+
+let selected={
+cpu:parts.cpu[0],
+gpu:parts.gpu[0],
+motherboard:parts.motherboard[0],
+ram:parts.ram[0],
+storage:parts.storage[1],
+psu:parts.psu[2],
+case:parts.case[0],
+cooler:parts.cooler[0],
+fans:parts.fans[0]
+};
+
+let cart=
+JSON.parse(
+localStorage.getItem("infinity_cart")||"[]"
+);
+
+
+/* ================================
+   NAVIGATION
+================================ */
+
+document.querySelectorAll(".navbtn").forEach(button=>{
+
+button.onclick=()=>{
+showPage(button.dataset.page);
+};
+
+});
+
+function showPage(page){
+
+document.querySelectorAll(".page")
+.forEach(x=>x.classList.remove("active"));
+
+document.getElementById(page)
+.classList.add("active");
+
+document.querySelectorAll(".navbtn")
+.forEach(x=>{
+x.classList.toggle(
+"active",
+x.dataset.page===page
+);
+});
+
+if(page==="cart"){
+renderCart();
+}
+
+window.scrollTo(0,0);
+
+}
+
+
+/* ================================
+   PREBUILTS
+================================ */
+
+function renderPrebuilts(){
+
+const grid=
+document.getElementById("prebuiltGrid");
+
+const search=
+document.getElementById("search")
+.value.toLowerCase();
+
+const filter=
+document.getElementById("filter").value;
+
+grid.innerHTML="";
+
+prebuilts
+
+.filter(x=>
+x.name.toLowerCase().includes(search)||
+x.cpu.toLowerCase().includes(search)||
+x.gpu.toLowerCase().includes(search)
+)
+
+.filter(x=>
+filter==="all"||
+x.price<=Number(filter)
+)
+
+.forEach(pc=>{
+
+const div=document.createElement("div");
+
+div.className="card";
+
+div.innerHTML=`
+
+<span class="tag">PREBUILT</span>
+
+<h3>${pc.name}</h3>
+
+<div class="price">
+$${pc.price.toLocaleString()}
+</div>
+
+<div class="specs">
+
+🎮 GPU: ${pc.gpu}<br>
+⚙️ CPU: ${pc.cpu}<br>
+🧠 RAM: ${pc.ram}<br>
+💾 Storage: ${pc.storage}
+
+</div>
+
+<button class="btn"
+onclick='addPrebuilt(${JSON.stringify(pc)})'>
+Add To Cart
+</button>
+
+`;
+
+grid.appendChild(div);
+
+});
+
+}
+
+function addPrebuilt(pc){
+
+cart.push({
+type:"prebuilt",
+name:pc.name,
+price:pc.price,
+details:pc
+});
+
+saveCart();
+
+alert(
+pc.name+" added to cart."
+);
+
+}
+
+
+/* ================================
+   BUILDER
+================================ */
+
+function populate(type,list){
+
+const select=
+document.getElementById(type);
+
+const old=
+selected[type]?.id;
+
+select.innerHTML="";
+
+list.forEach(item=>{
+
+const option=
+document.createElement("option");
+
+option.value=item.id;
+
+option.textContent=
+`${item.name} — $${item.price}`;
+
+select.appendChild(option);
+
+});
+
+if(list.some(x=>x.id===old)){
+select.value=old;
+}else if(list.length){
+
+selected[type]=list[0];
+
+select.value=list[0].id;
+
+}
+
+}
+
+function updateBuilder(){
+
+populate("cpu",parts.cpu);
+populate("gpu",parts.gpu);
+
+const boards=
+parts.motherboard.filter(
+x=>x.socket===selected.cpu.socket
+);
+
+populate("motherboard",boards);
+
+const ram=
+parts.ram.filter(
+x=>x.type===selected.motherboard.ram
+);
+
+populate("ram",ram);
+
+const coolers=
+parts.cooler.filter(
+x=>x.sockets.includes(selected.cpu.socket)
+);
+
+populate("cooler",coolers);
+
+populate("storage",parts.storage);
+populate("psu",parts.psu);
+populate("case",parts.case);
+populate("fans",parts.fans);
+
+const required=
+selected.gpu.watts+300;
+
+const validPSU=
+parts.psu.filter(
+x=>x.watts>=required
+);
+
+if(
+validPSU.length &&
+!validPSU.some(
+x=>x.id===selected.psu.id
+)
+){
+
+selected.psu=validPSU[0];
+
+}
+
+document.getElementById("psu").value=
+selected.psu.id;
+
+renderSummary();
+
+}
+
+
+/* Select listeners */
+
+Object.keys(parts).forEach(type=>{
+
+document
+.getElementById(type)
+.addEventListener("change",function(){
+
+const item=
+parts[type].find(
+x=>x.id===this.value
+);
+
+if(item){
+selected[type]=item;
+}
+
+updateBuilder();
+
+});
+
+});
+
+
+function renderSummary(){
+
+let total=0;
+
+const box=
+document.getElementById("summary");
+
+box.innerHTML="";
+
+Object.entries(selected)
+.forEach(([type,item])=>{
+
+if(!item)return;
+
+total+=item.price;
+
+const row=
+document.createElement("div");
+
+row.className="summary-row";
+
+row.innerHTML=`
+
+<span>${type.toUpperCase()}</span>
+
+<span>$${item.price.toLocaleString()}</span>
+
+`;
+
+box.appendChild(row);
+
+});
+
+document.getElementById("total")
+.textContent=
+"$"+total.toLocaleString();
+
+checkCompatibility();
+
+}
+
+
+/* ================================
+   COMPATIBILITY
+================================ */
+
+function checkCompatibility(){
+
+const errors=[];
+
+if(
+selected.cpu.socket!==
+selected.motherboard.socket
+){
+
+errors.push(
+"CPU and motherboard sockets do not match."
+);
+
+}
+
+if(
+selected.ram.type!==
+selected.motherboard.ram
+){
+
+errors.push(
+"RAM type does not match the motherboard."
+);
+
+}
+
+if(
+!selected.cooler.sockets.includes(
+selected.cpu.socket
+)
+){
+
+errors.push(
+"CPU cooler does not support this CPU."
+);
+
+}
+
+const minimum=
+selected.gpu.watts+300;
+
+if(
+selected.psu.watts<minimum
+){
+
+errors.push(
+`Recommended PSU: ${minimum}W or higher.`
+);
+
+}
+
+const box=
+document.getElementById("compatibility");
+
+if(errors.length===0){
+
+box.innerHTML=`
+<div class="notice good">
+✓ Build appears compatible
+</div>
+`;
+
+}else{
+
+box.innerHTML=`
+<div class="notice bad">
+${errors.map(x=>"⚠️ "+x).join("<br>")}
+</div>
+`;
+
+}
+
+}
+
+
+/* ================================
+   CART
+================================ */
+
+function saveCart(){
+
+localStorage.setItem(
+"infinity_cart",
+JSON.stringify(cart)
+);
+
+updateCartCount();
+
+}
+
+function updateCartCount(){
+
+document.getElementById("cartCount")
+.textContent=cart.length;
+
+}
+
+function addBuildToCart(){
+
+const total=
+Object.values(selected)
+.filter(Boolean)
+.reduce(
+(a,b)=>a+b.price,
+0
+);
+
+cart.push({
+
+type:"custom",
+
+name:"Infinity PCs Custom Build",
+
+price:total,
+
+details:
+JSON.parse(
+JSON.stringify(selected)
+)
+
+});
+
+saveCart();
+
+alert("Build added to cart.");
+
+}
+
+function renderCart(){
+
+const box=
+document.getElementById("cartItems");
+
+box.innerHTML="";
+
+let total=0;
+
+if(cart.length===0){
+
+box.innerHTML=`
+<div class="notice">
+Your cart is empty.
+</div>
+`;
+
+}else{
+
+cart.forEach((item,index)=>{
+
+total+=item.price;
+
+const div=
+document.createElement("div");
+
+div.className="cart-item";
+
+div.innerHTML=`
+
+<div>
+
+<h3>${item.name}</h3>
+
+<div class="specs">
+
+${
+item.type==="custom"
+
+?
+
+Object.entries(item.details)
+.map(
+([key,value])=>
+`${key}: ${value.name}`
+)
+.join("<br>")
+
+:
+
+`
+GPU: ${item.details.gpu}<br>
+CPU: ${item.details.cpu}<br>
+RAM: ${item.details.ram}<br>
+Storage: ${item.details.storage}
+`
+
+}
+
+</div>
+
+<strong>
+$${item.price.toLocaleString()}
+</strong>
+
+</div>
+
+<button
+class="btn danger"
+onclick="removeItem(${index})">
+Remove
+</button>
+
+`;
+
+box.appendChild(div);
+
+});
+
+}
+
+document.getElementById("cartTotal")
+.textContent=
+"$"+total.toLocaleString();
+
+}
+
+function removeItem(index){
+
+cart.splice(index,1);
+
+saveCart();
+
+renderCart();
+
+}
+
+function clearCart(){
+
+if(!confirm("Clear cart?"))return;
+
+cart=[];
+
+saveCart();
+
+renderCart();
+
+}
+
+
+/* ================================
+   DOWNLOAD BUILD
+================================ */
+
+function downloadBuild(){
+
+const build={
+store:"Infinity PCs",
+created:new Date().toISOString(),
+parts:selected,
+total:Object.values(selected)
+.filter(Boolean)
+.reduce((a,b)=>a+b.price,0)
+};
+
+const blob=
+new Blob(
+[JSON.stringify(build,null,2)],
+{type:"application/json"}
+);
+
+const url=
+URL.createObjectURL(blob);
+
+const a=
+document.createElement("a");
+
+a.href=url;
+
+a.download=
+"Infinity-PCs-Build.json";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+
+/* ================================
+   DOWNLOAD WEBSITE
+================================ */
+
+function downloadWebsite(){
+
+const html=
+"<!DOCTYPE html>\n"+
+document.documentElement.outerHTML;
+
+const blob=
+new Blob(
+[html],
+{type:"text/html"}
+);
+
+const url=
+URL.createObjectURL(blob);
+
+const a=
+document.createElement("a");
+
+a.href=url;
+
+a.download=
+"Infinity-PCs.html";
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+URL.revokeObjectURL(url);
+
+}
+
+
+/* ================================
+   LOGIN
+================================ */
+
+function openLogin(){
+
+document
+.getElementById("loginModal")
+.classList.add("open");
+
+}
+
+function closeLogin(){
+
+document
+.getElementById("loginModal")
+.classList.remove("open");
+
+}
+
+function login(){
+
+const email=
+document.getElementById("email").value;
+
+if(!email){
+
+alert("Enter your email.");
+
+return;
+
+}
+
+localStorage.setItem(
+"infinity_user",
+email
+);
+
+closeLogin();
+
+alert(
+"Logged in as "+email+
+" (demo login)"
+);
+
+}
+
+
+/* ================================
+   CHECKOUT
+================================ */
+
+function checkout(){
+
+if(cart.length===0){
+
+alert("Your cart is empty.");
+
+return;
+
+}
+
+alert(
+"Checkout is currently a demo.\n\n"+
+"Connect Stripe/PayPal and a backend "+
+"before accepting real payments."
+);
+
+}
+
+
+/* ================================
+   AMAZON PRICE UPDATE
+================================ */
+
+/*
+IMPORTANT:
+
+The browser does NOT contain Amazon credentials.
+
+When you set up server.js, it exposes:
+
+GET /api/prices
+
+The website asks the server for updated
+Amazon prices.
+
+*/
+
+async function updateAmazonPrices(){
+
+try{
+
+const response=
+await fetch("/api/prices");
+
+if(!response.ok)return;
+
+const prices=
+await response.json();
+
+let changed=false;
+
+Object.keys(prices).forEach(key=>{
+
+const info=prices[key];
+
+Object.keys(parts).forEach(category=>{
+
+const item=
+parts[category].find(
+x=>x.id===key
+);
+
+if(item && typeof info.price==="number"){
+
+item.price=info.price;
+
+changed=true;
+
+}
+
+});
+
+});
+
+if(changed){
+
+updateBuilder();
+
+renderPrebuilts();
+
+}
+
+}catch(error){
+
+console.log(
+"Amazon price server unavailable."
+);
+
+}
+
+}
+
+
+/*
+Refresh Amazon prices every 15 minutes.
+*/
+
+setInterval(
+updateAmazonPrices,
+15*60*1000
+);
+
+
+/* ================================
+   START
+================================ */
+
+renderPrebuilts();
+
+updateBuilder();
+
+updateCartCount();
+
+updateAmazonPrices();
+
+</script>
+
+</body>
 </html>
+
+
 
